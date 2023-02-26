@@ -20,5 +20,8 @@ The following techniques have been used:
 conda env create -f env.yml
 ```
 
-## To excute the script
+## To excute the scrip
+
+```
 python < scriptname.py >
+```
