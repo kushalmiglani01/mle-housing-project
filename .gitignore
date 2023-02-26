@@ -1,0 +1,7 @@
+# Files to be ignored - Byte-compiled/dll files
+
+__pycache__/
+*.py[cod]
+
+# Data Files
+*.csv
