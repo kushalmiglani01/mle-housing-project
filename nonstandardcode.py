@@ -129,7 +129,6 @@ lin_mse = mean_squared_error(housing_labels, housing_predictions)
 lin_rmse = np.sqrt(lin_mse)
 lin_rmse
 
-
 lin_mae = mean_absolute_error(housing_labels, housing_predictions)
 lin_mae
 
@@ -211,7 +210,6 @@ X_test_cat = X_test[["ocean_proximity"]]
 X_test_prepared = X_test_prepared.join(
     pd.get_dummies(X_test_cat, drop_first=True)
 )
-
 
 final_predictions = final_model.predict(X_test_prepared)
 final_mse = mean_squared_error(y_test, final_predictions)

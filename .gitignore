@@ -5,3 +5,6 @@ __pycache__/
 
 # Data Files
 *.csv
+
+# Temp Save Files
+*.save
