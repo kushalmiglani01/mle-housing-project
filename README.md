@@ -20,6 +20,13 @@ The following techniques have been used:
 conda env create -f env.yml
 ```
 
+## To activate the mle-dev environment
+ - Run the following command
+
+```
+conda activate mle-dev
+```
+
 ## To excute the scrip
 
 ```
