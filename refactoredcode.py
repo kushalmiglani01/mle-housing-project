@@ -125,20 +125,25 @@ class addAttributes(BaseEstimator, TransformerMixin):
 # Custom Transformer for Feature Selection
 class featureSelectorRFE(BaseEstimator, TransformerMixin):
 
-    # Initiating the class feature selector with two attributes
-    def __init__(self, rfecv, k_features_limit=None) -> None:
+    # Initiating the class feature selector with required inputs
+    def __init__(
+        self,
+        support_,
+        feature_importances_,
+        n_features_,
+        k_features_limit=None,
+    ) -> None:
         super().__init__()
-        self.rfecv = rfecv
-        self.support_ = self.rfecv.support_
-        self.feature_importances_ = self.rfecv.estimator_.feature_importances_
-        self.n_features_ = self.rfecv.n_features_
+        self.support_ = support_
+        self.feature_importances_ = feature_importances_
+        self.n_features_ = n_features_
         self.k_features_limit = k_features_limit
 
     def fit(self, X, y=None):
         return self
 
     # Getting the important features and its index using rfecv object
-    def transform(self, X):
+    def transform(self, X, y=None):
         # self.fit(X, y)
         self.features_used_index = [
             i for i, x in enumerate(self.support_) if x
@@ -205,7 +210,15 @@ rfecv_n_features_ = rfecv.n_features_
 preparation_and_feature_selection_pipeline = Pipeline(
     [
         ("preparation", full_pipeline),
-        ("feature_selection", featureSelectorRFE(rfecv, k_features)),
+        (
+            "feature_selection",
+            featureSelectorRFE(
+                rfecv_support_,
+                rfecv_feature_importances_,
+                rfecv_n_features_,
+                k_features,
+            ),
+        ),
     ]
 )
 
@@ -241,7 +254,15 @@ rand_search = joblib.load(rand_search_path)
 single_pipeline = Pipeline(
     [
         ("data_preparation", full_pipeline),
-        ("feature_selection", featureSelectorRFE(rfecv, k_features)),
+        (
+            "feature_selection",
+            featureSelectorRFE(
+                rfecv_support_,
+                rfecv_feature_importances_,
+                rfecv_n_features_,
+                k_features,
+            ),
+        ),
         ("svm_reg", SVR(**rand_search.best_params_)),
     ]
 )
@@ -264,7 +285,7 @@ param_grid = [
 grid_search_prep = GridSearchCV(
     single_pipeline,
     param_grid,
-    cv=5,
+    cv=2,
     scoring="neg_mean_squared_error",
     verbose=2,
 )
@@ -275,10 +296,8 @@ grid_search_prep.fit(housing, housing_labels)
 X_test = strat_test_set.drop("median_house_value", axis=1)
 y_test = strat_test_set["median_house_value"].copy()
 
-
-X_test_prepared = full_pipeline.fit_transform(X_test)
-
-
-final_predictions = grid_search_prep.predict(X_test_prepared)
+final_predictions = grid_search_prep.predict(X_test)
 final_mse = mean_squared_error(y_test, final_predictions)
 final_rmse = np.sqrt(final_mse)
+print("final_mse: \t", final_mse)
+print("final_rmse: \t", final_rmse)
