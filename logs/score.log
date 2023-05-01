@@ -1,0 +1,7 @@
+2023-05-01 19:49:21 - root - INFO - score:<module>:104 - log_path: /home/kushalmiglani/TCE/mle-training/logs/score.log
+2023-05-01 19:49:21 - root - INFO - score:main:19 - No test data path provided, taking ../datasets/housing
+2023-05-01 19:49:21 - root - INFO - score:main:23 - No mdoel path provided, taking ../artifacts
+2023-05-01 19:49:21 - root - INFO - train:transform:38 - Adding Atrributes Transformer Started!
+2023-05-01 19:49:21 - root - INFO - train:transform:71 - Feature Selector Transformer Started!
+2023-05-01 19:49:23 - root - INFO - score:main:40 - final_mse:    5637921956.200987
+2023-05-01 19:49:23 - root - INFO - score:main:41 - final_rmse:   75086.09695676682

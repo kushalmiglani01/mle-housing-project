@@ -1,0 +1,7 @@
+2023-05-01 20:01:28 - root - INFO - ingest_data:<module>:123 - log_path: /home/kushalmiglani/TCE/mle-training/logs/ingest_data.log
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:35 - No path provided, taking ../datasets/housing
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:44 - Data Downloaded, creating income category for stratified split
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:60 - Completed the split
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:65 - Saving the data
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:71 - Training data saved in ../datasets/housing/train.csv
+2023-05-01 20:01:28 - root - INFO - ingest_data:main:72 - Training data saved in ../datasets/housing/test.csv
