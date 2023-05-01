@@ -1,5 +1,6 @@
 import os
 from argparse import ArgumentParser, Namespace
+from train import *
 
 import joblib
 import numpy as np
@@ -17,10 +18,9 @@ def main(housing_path: str = None, model_path: str = None):
         model_path = MODEL_PATH
         print(f"No training_path provided, taking {model_path}")
 
-    HOUSING_PATH = os.path.join("../datasets", "housing")
-    test_path = os.path.join(HOUSING_PATH, "test.csv")
+    test_path = os.path.join(housing_path, "test.csv")
 
-    strat_test_set = pd.read(test_path)
+    strat_test_set = pd.read_csv(test_path)
 
     # laod model
     grid_search_pkl_path = os.path.join(MODEL_PATH, "grid_search_model.pkl")

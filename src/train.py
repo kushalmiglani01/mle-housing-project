@@ -16,21 +16,28 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.svm import SVR
 
-rooms_ix = households_ix = population_ix = bedrooms_ix = None
-
 
 # Custom Class to add attributes
 class addAttributes(BaseEstimator, TransformerMixin):
-    def __init__(self) -> None:
+    def __init__(
+        self, rooms_ix, households_ix, population_ix, bedrooms_ix
+    ) -> None:
         super().__init__()
+        self.rooms_ix = rooms_ix
+        self.households_ix = households_ix
+        self.population_ix = population_ix
+        self.bedrooms_ix = bedrooms_ix
 
     def fit(self, X, y=None):
         return self
 
     def transform(self, X):
-        rooms_per_household = X[:, rooms_ix] / X[:, households_ix]
-        population_per_household = X[:, population_ix] / X[:, households_ix]
-        bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+        print("Adding Atrributes Transformer Started!")
+        rooms_per_household = X[:, self.rooms_ix] / X[:, self.households_ix]
+        population_per_household = (
+            X[:, self.population_ix] / X[:, self.households_ix]
+        )
+        bedrooms_per_room = X[:, self.bedrooms_ix] / X[:, self.rooms_ix]
         return np.c_[
             X, rooms_per_household, population_per_household, bedrooms_per_room
         ]
@@ -58,6 +65,7 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
     # Getting the important features and its index using rfecv object
     def transform(self, X, y=None):
         # self.fit(X, y)
+        print("Feature Selector Transformer Started!")
         self.features_used_index = [
             i for i, x in enumerate(self.support_) if x
         ]
@@ -96,16 +104,21 @@ def main(train_path=None, model_path=None):
     # Custom Transformer for adding new attributes
     col_names = "total_rooms", "total_bedrooms", "population", "households"
 
-    global rooms_ix, bedrooms_ix, population_ix, households_ix
     rooms_ix, bedrooms_ix, population_ix, households_ix = [
         housing.columns.get_loc(c) for c in col_names
     ]
+    print(rooms_ix, households_ix, population_ix, bedrooms_ix)
 
     # numeric transformation pipeline
     num_pipeline = Pipeline(
         [
             ("imputer", SimpleImputer(strategy="median")),
-            ("attribs_adder", addAttributes()),
+            (
+                "attribs_adder",
+                addAttributes(
+                    rooms_ix, households_ix, population_ix, bedrooms_ix
+                ),
+            ),
             ("std_scaler", StandardScaler()),
         ]
     )
@@ -143,22 +156,6 @@ def main(train_path=None, model_path=None):
     rfecv_support_ = rfecv.support_
     rfecv_feature_importances_ = rfecv.estimator_.feature_importances_
     rfecv_n_features_ = rfecv.n_features_
-
-    # Data preprocessing and feature selection pipeline
-    preparation_and_feature_selection_pipeline = Pipeline(
-        [
-            ("preparation", full_pipeline),
-            (
-                "feature_selection",
-                featureSelectorRFE(
-                    rfecv_support_,
-                    rfecv_feature_importances_,
-                    rfecv_n_features_,
-                    k_features,
-                ),
-            ),
-        ]
-    )
 
     # Model persistence and Model training
     rand_search_path = os.path.join(MODEL_PATH, "rand_search_svm_result.pkl")
