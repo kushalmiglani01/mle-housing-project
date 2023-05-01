@@ -13,10 +13,17 @@ LOGGING_DEFAULT_CONFIG = {
     "disable_existing_loggers": False,
     "formatters": {
         "default": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s",
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(module)s:%(funcName)s:%(lineno)d - %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
-        "simple": {"format": "%(message)s"},
+        # "simple": {"format": "%(message)s"},
+    },
+    "handlers": {
+        "handler": {
+            "class": "logging.StreamHandler",
+            "formatter": "default",
+            "level": "DEBUG",
+        }
     },
     "root": {"level": "DEBUG"},
 }
@@ -48,9 +55,8 @@ def configure_logger(
     logging.Logger
     """
     if not cfg:
-        logging.config.dictConfig(LOGGING_DEFAULT_CONFIG)
-    else:
-        logging.config.dictConfig(cfg)
+        cfg = LOGGING_DEFAULT_CONFIG  # assign default configuration if not provided
+    logging.config.dictConfig(cfg)
 
     logger = logger or logging.getLogger()
 
@@ -62,11 +68,31 @@ def configure_logger(
             fh = logging.FileHandler(log_file)
             fh.setLevel(getattr(logging, log_level))
             logger.addHandler(fh)
+            try:
+                formatter = logging.Formatter(
+                    fmt=cfg["formatters"]["default"]["format"],
+                    datefmt=cfg["formatters"]["default"]["datefmt"],
+                )
+            except:
+                formatter = logging.Formatter(
+                    "%(ascitime)s %(name)-12s %(levelname)-8s %(message)s"
+                )
+            fh.setFormatter(formatter)
 
         if console:
             sh = logging.StreamHandler()
             sh.setLevel(getattr(logging, log_level))
             logger.addHandler(sh)
+            try:
+                formatter = logging.Formatter(
+                    fmt=cfg["formatters"]["default"]["format"],
+                    datefmt=cfg["formatters"]["default"]["datefmt"],
+                )
+            except:
+                formatter = logging.Formatter(
+                    "%(ascitime)s %(name)-12s %(levelname)-8s %(message)s"
+                )
+            sh.setFormatter(formatter)
 
     return logger
 
@@ -78,12 +104,6 @@ if __name__ == "__main__":
             os.path.dirname(os.path.abspath(__file__)), "custom_config.log"
         )
     )
-    print(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "custom_config.log"
-        )
-    )
-    # logger = configure_logger()
     logger.info(f"Logging Test - Start")
     logger.info(f"Logging Test - Test 1 Done")
     logger.warning("Watch out!")

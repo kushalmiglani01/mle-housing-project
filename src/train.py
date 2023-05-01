@@ -1,6 +1,6 @@
 import os
 from argparse import ArgumentParser, Namespace
-
+from custom_logger import *
 import joblib
 import numpy as np
 import pandas as pd
@@ -15,6 +15,9 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.svm import SVR
+
+### Seting Logger
+logger = configure_logger()
 
 
 # Custom Class to add attributes
@@ -32,7 +35,7 @@ class addAttributes(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        print("Adding Atrributes Transformer Started!")
+        logger.info("Adding Atrributes Transformer Started!")
         rooms_per_household = X[:, self.rooms_ix] / X[:, self.households_ix]
         population_per_household = (
             X[:, self.population_ix] / X[:, self.households_ix]
@@ -65,7 +68,7 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
     # Getting the important features and its index using rfecv object
     def transform(self, X, y=None):
         # self.fit(X, y)
-        print("Feature Selector Transformer Started!")
+        logger.info("Feature Selector Transformer Started!")
         self.features_used_index = [
             i for i, x in enumerate(self.support_) if x
         ]
@@ -86,13 +89,14 @@ def main(train_path=None, model_path=None):
 
     if train_path is None:
         train_path = TRAIN_PATH
-        print(f"No training_path provided, taking {train_path}")
+        logger.info(f"No training_path provided, taking {train_path}")
 
     if model_path is None:
         model_path = MODEL_PATH
-        print(f"No training_path provided, taking {model_path}")
+        logger.info(f"No training_path provided, taking {model_path}")
 
     # Importing training data
+    logger.info("Setting up the training data")
     strat_train_set = pd.read_csv(train_path)
 
     # Preparing test data for pipeline
@@ -107,7 +111,6 @@ def main(train_path=None, model_path=None):
     rooms_ix, bedrooms_ix, population_ix, households_ix = [
         housing.columns.get_loc(c) for c in col_names
     ]
-    print(rooms_ix, households_ix, population_ix, bedrooms_ix)
 
     # numeric transformation pipeline
     num_pipeline = Pipeline(
@@ -129,6 +132,7 @@ def main(train_path=None, model_path=None):
     cat_attribs = ["ocean_proximity"]
 
     # data preprocessing pipeline
+    logger.info("Setting up the data processing pipeline")
     full_pipeline = ColumnTransformer(
         [
             ("num", num_pipeline, num_attribs),
@@ -139,6 +143,7 @@ def main(train_path=None, model_path=None):
     housing_prepared = full_pipeline.fit_transform(housing)
 
     # Feature elimination using RFE
+    logger.info("Extracting feature using RFE, selecting the best 5 features")
     k_features = 5
     reg_rf = RandomForestRegressor(random_state=42)
     rfecv = RFECV(
@@ -147,7 +152,7 @@ def main(train_path=None, model_path=None):
         cv=3,
         n_jobs=-1,
         min_features_to_select=k_features,
-        verbose=2,
+        verbose=False,
         importance_getter="feature_importances_",
     )
 
@@ -165,7 +170,11 @@ def main(train_path=None, model_path=None):
         "gamma": expon(scale=1.0),
     }
 
+    logger.info("Tuning the hyperparameters")
     if not os.path.exists(rand_search_path):
+        logger.info(
+            "Previous model artifact not present, tuning hyperparameters using RandomizedSearchCV"
+        )
         svm_regressor = SVR()
         rand_search = RandomizedSearchCV(
             svm_regressor,
@@ -173,7 +182,7 @@ def main(train_path=None, model_path=None):
             n_iter=8,
             cv=2,
             scoring="neg_mean_squared_error",
-            verbose=2,
+            verbose=False,
             n_jobs=-1,
             random_state=42,
         )
@@ -187,6 +196,9 @@ def main(train_path=None, model_path=None):
     rand_search = joblib.load(rand_search_path)
 
     # Single model pipeline for trained svr hyperparameters
+    logger.info(
+        "Formulated single pipeline for model using trained hyperparameters"
+    )
     single_pipeline = Pipeline(
         [
             ("data_preparation", full_pipeline),
@@ -204,6 +216,7 @@ def main(train_path=None, model_path=None):
     )
 
     # Further model exploration and final model selection
+    logger.info("Doing further model exploration")
     full_pipeline.named_transformers_["cat"].handle_unknown = "ignore"
     param_grid = [
         {
@@ -217,22 +230,25 @@ def main(train_path=None, model_path=None):
             ),
         }
     ]
-
     grid_search_prep = GridSearchCV(
         single_pipeline,
         param_grid,
         cv=2,
         scoring="neg_mean_squared_error",
-        verbose=0,
+        verbose=False,
     )
+    logger.info("Finding the best model")
     grid_search_prep.fit(housing, housing_labels)
     grid_search_pkl_path = os.path.join(model_path, "grid_search_model.pkl")
     joblib.dump(grid_search_prep, grid_search_pkl_path)
-    print(f"Model training complete find the pkl at {grid_search_pkl_path}")
+    logger.info(
+        f"Model training complete find the pkl at {grid_search_pkl_path}"
+    )
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+
     parser.add_argument(
         "-t",
         "--train_path",
@@ -247,7 +263,46 @@ if __name__ == "__main__":
         default=None,
     )
 
+    parser.add_argument(
+        "-ll",
+        "--log_level",
+        help="Provide the log level, default is set to debug",
+        default="DEBUG",
+        type=str,
+    )
+
+    parser.add_argument(
+        "-lp",
+        "--log_path",
+        help="Provide the log_path if log file is needed, default is set to None",
+        default=None,
+        type=str,
+    )
+
+    parser.add_argument(
+        "-cl",
+        "--console_log",
+        help="select if logging is required in console, default is set to True",
+        default=True,
+        type=bool,
+    )
+
     args: Namespace = parser.parse_args()
+
+    log_level = args.log_level
+    log_path = args.log_path
+    console_log = args.console_log
+
+    if not log_path is None:
+        base_name = os.path.basename(__file__).split(".")[0]
+        log_path = os.path.join(os.path.abspath(log_path), f"{base_name}.log")
+
+    # Overriding default logger config
+    logger = configure_logger(
+        log_file=log_path, console=console_log, log_level=log_level
+    )
+
+    logger.info(f"log_path: {log_path}")
 
     if args.train_path is None:
         train_path = None
@@ -258,5 +313,7 @@ if __name__ == "__main__":
         model_path = None
     else:
         model_path = args.model_path
-
-    main(train_path, model_path)
+    try:
+        main(train_path, model_path)
+    except Exception as err:
+        logger.error(f"Model training failed, Unexpected {err=}, {type(err)=}")
