@@ -5,7 +5,7 @@ DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
 HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
 
 # Default Args
-HOUSING_PATH = os.path.join("../datasets", "housing")
+HOUSING_PATH = os.path.join("..", "datasets", "housing")
 TRAIN_PATH = os.path.join(HOUSING_PATH, "train.csv")
 TEST_PATH = os.path.join(HOUSING_PATH, "test.csv")
 TRAIN_PATH = os.path.join(HOUSING_PATH, "train.csv")
