@@ -6,6 +6,8 @@ pyproject.toml
 .vscode/settings.json
 artifacts/grid_search_model.pkl
 artifacts/rand_search_svm_result.pkl
+dist/housingmodel-1.0.0-py3-none-any.whl
+dist/housingmodel-1.0.0.tar.gz
 logs/ingest_data.log
 logs/score.log
 logs/train.log
