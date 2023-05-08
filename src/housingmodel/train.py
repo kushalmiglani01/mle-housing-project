@@ -1,3 +1,23 @@
+"""
+train.py module trains the model for predicting median house prices. It takes following arguments
+
+usage: train.py [-h] [-t TRAIN_PATH] [-m MODEL_PATH] [-ll LOG_LEVEL] [-lp LOG_PATH] [-cl CONSOLE_LOG]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TRAIN_PATH, --train_path TRAIN_PATH
+                        Provide the path for training data
+  -m MODEL_PATH, --model_path MODEL_PATH
+                        Provide the path for model output
+  -ll LOG_LEVEL, --log_level LOG_LEVEL
+                        Provide the log level, default is set to debug
+  -lp LOG_PATH, --log_path LOG_PATH
+                        Provide the log_path if log file is needed, default is set to None
+  -cl CONSOLE_LOG, --console_log CONSOLE_LOG
+                        select if logging is required in console, default is set to True
+"""
+
+
 import os
 import pickle
 import sys
@@ -25,7 +45,34 @@ logger = configure_logger()
 
 
 def main(train_path=None, model_path=None):
-    """ """
+    """Main method for training the model.
+
+    Generate a model pickle file as part of model training
+    and save them in the specified output directory
+
+    Parameters
+    ----------
+    train_path : str
+        Full path for train.csv
+    model_path : str
+        Full path for the pkl file where output will be generated
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function generates artifacts by applying transformations and training the model to the input data
+    and saving the resulting artifacts in the specified output directory.
+
+    Examples
+    --------
+
+    train_path = "/datasets/housing/train.csv"
+    model_path = "artifacts/grid_search_model.pkl"
+
+    """
 
     if train_path is None:
         train_path = TRAIN_PATH

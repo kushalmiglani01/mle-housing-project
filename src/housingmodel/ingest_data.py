@@ -1,3 +1,21 @@
+"""
+ingest_data.py downloads the housing.tgz which contatins the datasets and perform a 
+stratified split to generate test.csv and train.csv
+
+usage: ingest_data.py [-h] [-p PATH] [-ll LOG_LEVEL] [-lp LOG_PATH] [-cl CONSOLE_LOG]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  Provide the path for data download
+  -ll LOG_LEVEL, --log_level LOG_LEVEL
+                        Provide the log level, default is set to debug
+  -lp LOG_PATH, --log_path LOG_PATH
+                        Provide the full absolute log_path if log file is needed, default is set to None
+  -cl CONSOLE_LOG, --console_log CONSOLE_LOG
+                        select if logging is required in console, default is set to True
+
+"""
+
 import os
 import tarfile
 from argparse import ArgumentParser, Namespace
@@ -15,6 +33,32 @@ logger = configure_logger()
 
 # Data loading
 def fetch_housing_data(housing_path, housing_url=HOUSING_URL):
+    """
+    Download the housing dataset from the given URL and save it to the specified directory.
+
+    Parameters
+    ----------
+    housing_path : str
+        The directory path where the housing dataset should be downloaded.
+
+    housing_url : str
+        The URL from which the housing dataset should be downloaded.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function will create the specified directory if it does not already exist.
+
+    Examples
+    --------
+    >>> housing_path = 'datasets/housing'
+    >>> housing_url = 'https://example.com/housing.tgz'
+    >>> fetch_housing_data(housing_path, housing_url)
+    """
+
     os.makedirs(housing_path, exist_ok=True)
     tgz_path = os.path.join(housing_path, "housing.tgz")
     urllib.request.urlretrieve(housing_url, tgz_path)
@@ -24,12 +68,46 @@ def fetch_housing_data(housing_path, housing_url=HOUSING_URL):
 
 
 def load_housing_data(path):
+    """
+    Read a CSV file from the given path and return it as a pandas dataframe.
+
+    Parameters
+    ----------
+    path : str
+        The path to the CSV file.
+
+    Returns
+    -------
+    pandas.core.frame.DataFrame
+        A pandas dataframe containing the data from the CSV file.
+    """
     csv_path = os.path.join(path, "housing.csv")
     return pd.read_csv(csv_path)
 
 
 # Main function
 def main(path: str = None):
+    """
+    Downloads the housing.tgz data and creates a train test split.
+
+    Parameters
+    ----------
+    path : str
+        Path to directory where the data will be downloaded.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function downloads the housing.tgz file from the internet and extracts the
+    housing.csv file. It then reads in the data and creates a train-test split using a
+    80-20 split ratio. The split data is then saved as train.csv and test.csv files in
+    the same directory as the original data.
+
+    """
+
     if path is None:
         path = HOUSING_PATH
         logger.info(f"No path provided, taking {path}")

@@ -1,3 +1,24 @@
+'''
+score.py module evaluates the performance of the ML model on a test dataset.
+
+usage: score.py [-h] [-t TEST_PATH] [-m MODEL_PATH] [-ll LOG_LEVEL] [-lp LOG_PATH] [-cl CONSOLE_LOG]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TEST_PATH, --test_path TEST_PATH
+                        Provide the path for testing data
+  -m MODEL_PATH, --model_path MODEL_PATH
+                        Provide the path for model output
+  -ll LOG_LEVEL, --log_level LOG_LEVEL
+                        Provide the log level, default is set to debug
+  -lp LOG_PATH, --log_path LOG_PATH
+                        Provide the full absolute log_path if log file is needed, default is set to None
+  -cl CONSOLE_LOG, --console_log CONSOLE_LOG
+                        select if logging is required in console, default is set to True
+'''
+
+
+
 import os
 import sys
 from argparse import ArgumentParser, Namespace
@@ -17,6 +38,35 @@ logger = configure_logger()
 
 
 def main(test_path: str = None, model_path: str = None):
+    """Main method for scoring the model.
+
+    Generate model score as part of the testing of the model
+
+    Parameters
+    ----------
+    test_path : str
+        Full path for test.csv
+    model_path : str
+        Full path for the pkl file where output will be generated
+
+    Returns
+    -------
+    Tuple[float, float]
+        A tuple containing the root mean squared error (RMSE) and the mean squared error (MSE)
+        between the model predictions and the ground truth values on the test dataset.
+
+    Notes
+    -----
+    Evaluate the performance of a machine learning model on a test dataset.
+
+    Examples
+    --------
+
+    train_path = "/datasets/housing/test.csv"
+    model_path = "artifacts/grid_search_model.pkl"
+
+    """
+
     if test_path is None:
         housing_path = HOUSING_PATH
         test_path = os.path.join(housing_path, "test.csv")
