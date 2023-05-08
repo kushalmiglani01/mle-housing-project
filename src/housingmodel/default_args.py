@@ -1,3 +1,17 @@
+"""
+This module contains the default arguments and global variabls.
+Following arguments and global variables are used
+
+* DOWNLOAD_ROOT
+* HOUSING_URL
+* PROJECT_ROOT
+* HOUSING_PATH
+* TRAIN_PATH
+* TEST_PATH
+* MODEL_PATH
+
+"""
+
 import os
 
 # Global variables related to data loading

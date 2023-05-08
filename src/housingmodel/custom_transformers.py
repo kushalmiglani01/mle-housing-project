@@ -94,7 +94,7 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
     """
     Custom Transformer for Feature Selection using Recursive Feature Elimination with Cross-Validation
 
-    Parameters:
+    Parameters
     -----------
     support_: array-like of shape (n_features,)
         The mask of selected features.
@@ -105,7 +105,7 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
     k_features_limit: int, optional
         The limit on the maximum number of features to select. If None, it selects all features with non-zero importance.
 
-    Methods:
+    Methods
     --------
     fit(X, y=None)
         Fit the transformer on the input data.
@@ -136,17 +136,19 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         """
         Fit the transformer on the input data.
-        Parameters:
+
+        Parameters
         -----------
         X: array-like of shape (n_samples, n_features)
             The input data to be transformed.
         y: array-like of shape (n_samples,), optional
             The target values (class labels in classification, real numbers in regression). This parameter is not used.
 
-        Returns:
+        Returns
         --------
         self: object
         """
+
         return self
 
     # Getting the important features and its index using rfecv object
@@ -156,14 +158,15 @@ class featureSelectorRFE(BaseEstimator, TransformerMixin):
 
         transform(X, y=None)
             Select the most important features based on their importances.
-            Parameters:
-            -----------
-            X: array-like of shape (n_samples, n_features)
-                The input data to be transformed.
-            y: array-like of shape (n_samples,), optional
-                The target values (class labels in classification, real numbers in regression). This parameter is not used.
 
-        Returns:
+        Parameters
+        -----------
+        X: array-like of shape (n_samples, n_features)
+            The input data to be transformed.
+        y: array-like of shape (n_samples,), optional
+            The target values (class labels in classification, real numbers in regression). This parameter is not used.
+
+        Returns
         --------
         X_transformed: array-like of shape (n_samples, k_features)
             The transformed input data with the k most important features.
