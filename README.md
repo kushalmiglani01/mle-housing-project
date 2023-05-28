@@ -7,6 +7,12 @@ The following techniques have been used:
  - Linear regression
  - Decision Tree
  - Random Forest
+ - Grid Search CV
+ - Randomized Search CV
+The model implemented for the final prediction:
+
+ - SVM
+ - RFE for feature selection using Random Forest
 
 ## Steps performed
  - We prepare and clean the data. We check and impute for missing values.
@@ -28,7 +34,12 @@ conda activate mle-dev
 ```
 
 ## To excute the scrip
-
+ - There are three main scripts in the housingmodel package
+    - ingest_data.py
+    - train.py
+    - score.py
+    
+ - For help
 ```
-python < scriptname.py >
+python src/housingmodel/<scriptname.py> -h
 ```

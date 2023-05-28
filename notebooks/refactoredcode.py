@@ -27,6 +27,7 @@ DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
 HOUSING_PATH = os.path.join("datasets", "housing")
 HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
 
+
 # Data loading
 def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
     os.makedirs(housing_path, exist_ok=True)
@@ -124,7 +125,6 @@ class addAttributes(BaseEstimator, TransformerMixin):
 
 # Custom Transformer for Feature Selection
 class featureSelectorRFE(BaseEstimator, TransformerMixin):
-
     # Initiating the class feature selector with required inputs
     def __init__(
         self,
