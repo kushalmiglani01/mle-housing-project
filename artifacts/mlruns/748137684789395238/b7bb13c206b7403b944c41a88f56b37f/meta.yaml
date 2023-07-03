@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/748137684789395238/b7bb13c206b7403b944c41a88f56b37f/artifacts
+end_time: 1688396663179
+entry_point_name: ''
+experiment_id: '748137684789395238'
+lifecycle_stage: active
+run_id: b7bb13c206b7403b944c41a88f56b37f
+run_name: abundant-dog-428
+run_uuid: b7bb13c206b7403b944c41a88f56b37f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688396201219
+status: 3
+tags: []
+user_id: kushalmiglani

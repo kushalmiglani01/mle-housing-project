@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/351793841297777562/179a1154678b4b0787e5c92e55196d33/artifacts
+end_time: 1688396678504
+entry_point_name: ''
+experiment_id: '351793841297777562'
+lifecycle_stage: active
+run_id: 179a1154678b4b0787e5c92e55196d33
+run_name: bold-fowl-803
+run_uuid: 179a1154678b4b0787e5c92e55196d33
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688396217700
+status: 3
+tags: []
+user_id: kushalmiglani

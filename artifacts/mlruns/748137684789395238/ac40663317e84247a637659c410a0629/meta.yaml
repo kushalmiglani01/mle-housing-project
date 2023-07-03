@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/748137684789395238/ac40663317e84247a637659c410a0629/artifacts
+end_time: 1688396663179
+entry_point_name: ''
+experiment_id: '748137684789395238'
+lifecycle_stage: active
+run_id: ac40663317e84247a637659c410a0629
+run_name: carefree-grouse-656
+run_uuid: ac40663317e84247a637659c410a0629
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688396201219
+status: 3
+tags: []
+user_id: kushalmiglani

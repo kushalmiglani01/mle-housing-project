@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/351793841297777562/8ec6644296dd408bb9cf56e9dbc61f50/artifacts
+end_time: 1688396678504
+entry_point_name: ''
+experiment_id: '351793841297777562'
+lifecycle_stage: active
+run_id: 8ec6644296dd408bb9cf56e9dbc61f50
+run_name: melodic-panda-773
+run_uuid: 8ec6644296dd408bb9cf56e9dbc61f50
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688396217700
+status: 3
+tags: []
+user_id: kushalmiglani

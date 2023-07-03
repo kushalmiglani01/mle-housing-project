@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/748137684789395238/26bcc43a36b44e308201f4d7b2b82286/artifacts
+end_time: 1688396201214
+entry_point_name: ''
+experiment_id: '748137684789395238'
+lifecycle_stage: active
+run_id: 26bcc43a36b44e308201f4d7b2b82286
+run_name: CHILD_RUN_DOWNLOAD_DATA
+run_uuid: 26bcc43a36b44e308201f4d7b2b82286
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688396200194
+status: 3
+tags: []
+user_id: kushalmiglani
