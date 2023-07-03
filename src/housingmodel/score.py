@@ -1,4 +1,4 @@
-'''
+"""
 score.py module evaluates the performance of the ML model on a test dataset.
 
 usage: score.py [-h] [-t TEST_PATH] [-m MODEL_PATH] [-ll LOG_LEVEL] [-lp LOG_PATH] [-cl CONSOLE_LOG]
@@ -15,14 +15,14 @@ optional arguments:
                         Provide the full absolute log_path if log file is needed, default is set to None
   -cl CONSOLE_LOG, --console_log CONSOLE_LOG
                         select if logging is required in console, default is set to True
-'''
-
+"""
 
 
 import os
 import sys
 from argparse import ArgumentParser, Namespace
 
+import mlflow
 import numpy as np
 import pandas as pd
 from housingmodel.custom_logger import *
@@ -105,6 +105,13 @@ def main(test_path: str = None, model_path: str = None):
     logger.info(
         f"final_rmse:   {final_rmse}",
     )
+    # mlflow logging the parameters
+    mlflow.log_param("test_path", test_path)
+    mlflow.log_param("model_path", model_path)
+    # mlflow logging the metrics
+    mlflow.log_metric("final_rmse", final_rmse)
+    mlflow.log_metric("final_mse", final_mse)
+
     return final_mse, final_rmse
 
 
@@ -178,7 +185,17 @@ if __name__ == "__main__":
     try:
         from housingmodel.train import addAttributes
 
-        main(test_path, model_path)
+        artifact_path = os.path.join(PROJECT_ROOT, "artifacts")
+        print(artifact_path)
+
+        exp_name = f"evaluation_module"
+        print(f"file:/{artifact_path}/mlruns")
+        mlflow.set_tracking_uri(f"file:{artifact_path}/mlruns")
+        mlflow.set_experiment(exp_name)
+        with mlflow.start_run(
+            experiment_id=mlflow.get_experiment_by_name(exp_name).experiment_id
+        ):
+            main(test_path, model_path)
     except Exception as err:
         logger.error(f"Model scoring failed, Unexpected {err=}, {type(err)=}")
         raise

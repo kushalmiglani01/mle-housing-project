@@ -16,14 +16,17 @@ optional arguments:
 
 """
 
+import datetime as dt
 import os
 import tarfile
 from argparse import ArgumentParser, Namespace
 
+import mlflow
+import mlflow.sklearn
 import numpy as np
 import pandas as pd
 from housingmodel.custom_logger import *
-from housingmodel.default_args import HOUSING_PATH, HOUSING_URL
+from housingmodel.default_args import HOUSING_PATH, HOUSING_URL, PROJECT_ROOT
 from six.moves import urllib
 from sklearn.model_selection import StratifiedShuffleSplit
 
@@ -62,6 +65,7 @@ def fetch_housing_data(housing_path, housing_url=HOUSING_URL):
     os.makedirs(housing_path, exist_ok=True)
     tgz_path = os.path.join(housing_path, "housing.tgz")
     urllib.request.urlretrieve(housing_url, tgz_path)
+    mlflow.log_param("data_url", housing_url)
     housing_tgz = tarfile.open(tgz_path)
     housing_tgz.extractall(path=housing_path)
     housing_tgz.close()
@@ -115,6 +119,10 @@ def main(path: str = None):
     train_path = os.path.join(path, "train.csv")
     test_path = os.path.join(path, "test.csv")
 
+    # mlflow logging the parameters
+    mlflow.log_param("train_path", train_path)
+    mlflow.log_param("test_path", test_path)
+
     # downloading the data
     fetch_housing_data(path)
     housing = load_housing_data(path)
@@ -129,6 +137,10 @@ def main(path: str = None):
         bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
         labels=[1, 2, 3, 4, 5],
     )
+
+    mlflow.log_param("n_splits", 1)
+    mlflow.log_param("test_size", 0.2)
+    mlflow.log_param("random_state", 42)
 
     split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
     for train_index, test_index in split.split(housing, housing["income_cat"]):
@@ -205,6 +217,17 @@ if __name__ == "__main__":
     else:
         path = args.path
     try:
-        main(path)
+        artifact_path = os.path.join(PROJECT_ROOT, "artifacts")
+        print(artifact_path)
+
+        exp_name = f"download_data_experiment"
+        print(f"file:/{artifact_path}/mlruns")
+        mlflow.set_tracking_uri(f"file:{artifact_path}/mlruns")
+        mlflow.set_experiment(exp_name)
+        with mlflow.start_run(
+            experiment_id=mlflow.get_experiment_by_name(exp_name).experiment_id
+        ):
+            main(path)
+
     except Exception as err:
         logger.error(f"data gathering failed, Unexpected {err=}, {type(err)=}")

@@ -23,7 +23,9 @@ import pickle
 import sys
 from argparse import ArgumentParser, Namespace
 
+import cloudpickle
 import joblib
+import mlflow
 import pandas as pd
 from housingmodel.custom_logger import *
 from housingmodel.custom_transformers import addAttributes, featureSelectorRFE
@@ -87,6 +89,10 @@ def main(train_path=None, model_path=None):
     else:
         grid_search_pkl_path = model_path
 
+    # mlflow logging the parameters
+    mlflow.log_param("train_path", train_path)
+    mlflow.log_param("model_path", model_path)
+
     # Importing training data
     logger.info("Setting up the training data")
     strat_train_set = pd.read_csv(train_path)
@@ -135,8 +141,10 @@ def main(train_path=None, model_path=None):
     housing_prepared = full_pipeline.fit_transform(housing)
 
     # Feature elimination using RFE
-    logger.info("Extracting feature using RFE, selecting the best 5 features")
     k_features = 5
+    logger.info(
+        f"Extracting feature using RFE, selecting the best {k_features} features"
+    )
     reg_rf = RandomForestRegressor(random_state=42)
     rfecv = RFECV(
         estimator=reg_rf,
@@ -161,6 +169,12 @@ def main(train_path=None, model_path=None):
         "C": reciprocal(20, 20000),
         "gamma": expon(scale=1.0),
     }
+
+    mlflow.log_param("feature elimnation", "rfe")
+    mlflow.log_param("estimator_rfe", "reg_rf")
+    mlflow.log_param("min_features_to_select", k_features)
+    mlflow.log_param("cv", 3)
+    mlflow.log_artifact(rand_search_path)
 
     logger.info("Tuning the hyperparameters")
     if not os.path.exists(rand_search_path):
@@ -222,15 +236,46 @@ def main(train_path=None, model_path=None):
             ),
         }
     ]
-    grid_search_prep = GridSearchCV(
-        single_pipeline,
-        param_grid,
-        cv=2,
-        scoring="neg_mean_squared_error",
-        verbose=False,
-    )
+
+    mlflow.log_param("parent", "yes")
+    try:
+        with mlflow.start_run(
+            run_name="CHILD_RUN",
+            experiment_id=mlflow.get_experiment_by_name(
+                exp_name
+            ).experiment_id,
+            description="child",
+            nested=True,
+        ) as child_run:
+            mlflow.log_param("child", "yes")
+            mlflow.sklearn.autolog(log_post_training_metrics=False)
+            grid_search_prep = GridSearchCV(
+                single_pipeline,
+                param_grid,
+                cv=2,
+                scoring="neg_mean_squared_error",
+                verbose=False,
+            )
+    except:
+        with mlflow.start_run(
+            run_name="CHILD_RUN",
+            description="child",
+            nested=True,
+        ) as child_run:
+            mlflow.log_param("child", "yes")
+            mlflow.sklearn.autolog(log_post_training_metrics=False)
+            grid_search_prep = GridSearchCV(
+                single_pipeline,
+                param_grid,
+                cv=2,
+                scoring="neg_mean_squared_error",
+                verbose=False,
+            )
+
     logger.info("Finding the best model")
     grid_search_prep.fit(housing, housing_labels)
+
+    mlflow.log_artifact(grid_search_pkl_path)
 
     with open(grid_search_pkl_path, "wb") as f:
         pickle.dump([addAttributes, featureSelectorRFE, grid_search_prep], f)
@@ -307,7 +352,17 @@ if __name__ == "__main__":
     else:
         model_path = args.model_path
     try:
-        main(train_path, model_path)
+        artifact_path = os.path.join(PROJECT_ROOT, "artifacts")
+        print(artifact_path)
+
+        exp_name = f"training_module"
+        print(f"file:/{artifact_path}/mlruns")
+        mlflow.set_tracking_uri(f"file:{artifact_path}/mlruns")
+        mlflow.set_experiment(exp_name)
+        with mlflow.start_run(
+            experiment_id=mlflow.get_experiment_by_name(exp_name).experiment_id
+        ):
+            main(train_path, model_path)
     except Exception as err:
         logger.error(f"Model training failed, Unexpected {err=}, {type(err)=}")
         raise
