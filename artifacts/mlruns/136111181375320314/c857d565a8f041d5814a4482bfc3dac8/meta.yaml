@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/c857d565a8f041d5814a4482bfc3dac8/artifacts
+end_time: 1688394875454
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: c857d565a8f041d5814a4482bfc3dac8
+run_name: gentle-goose-833
+run_uuid: c857d565a8f041d5814a4482bfc3dac8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688394484903
+status: 3
+tags: []
+user_id: kushalmiglani

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/295271738838227429/aa8e14a00cf54268b95b042c6db89531/artifacts
+end_time: 1688378612486
+entry_point_name: ''
+experiment_id: '295271738838227429'
+lifecycle_stage: active
+run_id: aa8e14a00cf54268b95b042c6db89531
+run_name: bittersweet-kite-42
+run_uuid: aa8e14a00cf54268b95b042c6db89531
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378612046
+status: 3
+tags: []
+user_id: kushalmiglani

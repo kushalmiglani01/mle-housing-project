@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/57aebc5809874468b3e81f19bc4b76da/artifacts
+end_time: 1688392522983
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: 57aebc5809874468b3e81f19bc4b76da
+run_name: silent-loon-122
+run_uuid: 57aebc5809874468b3e81f19bc4b76da
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688392102774
+status: 3
+tags: []
+user_id: kushalmiglani

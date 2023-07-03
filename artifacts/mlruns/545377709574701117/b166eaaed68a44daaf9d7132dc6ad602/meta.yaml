@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/545377709574701117/b166eaaed68a44daaf9d7132dc6ad602/artifacts
+end_time: 1688387955802
+entry_point_name: ''
+experiment_id: '545377709574701117'
+lifecycle_stage: active
+run_id: b166eaaed68a44daaf9d7132dc6ad602
+run_name: mercurial-sloth-670
+run_uuid: b166eaaed68a44daaf9d7132dc6ad602
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688387562639
+status: 4
+tags: []
+user_id: kushalmiglani

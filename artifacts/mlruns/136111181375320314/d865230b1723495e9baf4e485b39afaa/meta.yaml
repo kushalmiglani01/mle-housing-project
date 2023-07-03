@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/d865230b1723495e9baf4e485b39afaa/artifacts
+end_time: 1688390884679
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: d865230b1723495e9baf4e485b39afaa
+run_name: bedecked-goat-337
+run_uuid: d865230b1723495e9baf4e485b39afaa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688390433816
+status: 3
+tags: []
+user_id: kushalmiglani

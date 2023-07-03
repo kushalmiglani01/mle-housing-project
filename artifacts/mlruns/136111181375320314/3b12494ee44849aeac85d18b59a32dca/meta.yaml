@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/3b12494ee44849aeac85d18b59a32dca/artifacts
+end_time: 1688392522983
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: 3b12494ee44849aeac85d18b59a32dca
+run_name: charming-ox-535
+run_uuid: 3b12494ee44849aeac85d18b59a32dca
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688392102774
+status: 3
+tags: []
+user_id: kushalmiglani

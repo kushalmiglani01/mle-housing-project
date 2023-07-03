@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/ac2c046d38034c698a56b2a6d220b732/artifacts
+end_time: 1688394875454
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: ac2c046d38034c698a56b2a6d220b732
+run_name: blushing-calf-600
+run_uuid: ac2c046d38034c698a56b2a6d220b732
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688394484903
+status: 3
+tags: []
+user_id: kushalmiglani

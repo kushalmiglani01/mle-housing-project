@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/473820055337841638/38e5b24331164429854f311c1e28d1df/artifacts
+end_time: 1688378923229
+entry_point_name: ''
+experiment_id: '473820055337841638'
+lifecycle_stage: active
+run_id: 38e5b24331164429854f311c1e28d1df
+run_name: fortunate-steed-180
+run_uuid: 38e5b24331164429854f311c1e28d1df
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378920998
+status: 3
+tags: []
+user_id: kushalmiglani

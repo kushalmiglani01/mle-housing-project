@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/ea1875db09e6403387287ef91ffaf79b/artifacts
+end_time: 1688394876788
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: active
+run_id: ea1875db09e6403387287ef91ffaf79b
+run_name: CHILD_RUN_TRAIN_MODEL
+run_uuid: ea1875db09e6403387287ef91ffaf79b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688394484903
+status: 3
+tags: []
+user_id: kushalmiglani

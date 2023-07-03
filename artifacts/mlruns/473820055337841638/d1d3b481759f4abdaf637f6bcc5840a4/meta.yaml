@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/473820055337841638/d1d3b481759f4abdaf637f6bcc5840a4/artifacts
+end_time: 1688378917352
+entry_point_name: ''
+experiment_id: '473820055337841638'
+lifecycle_stage: active
+run_id: d1d3b481759f4abdaf637f6bcc5840a4
+run_name: glamorous-midge-186
+run_uuid: d1d3b481759f4abdaf637f6bcc5840a4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378915342
+status: 3
+tags: []
+user_id: kushalmiglani

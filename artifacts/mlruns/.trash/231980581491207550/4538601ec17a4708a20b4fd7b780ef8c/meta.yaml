@@ -1,0 +1,16 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/4538601ec17a4708a20b4fd7b780ef8c/artifacts
+deleted_time: 1688378559356
+end_time: 1688378471779
+entry_point_name: ''
+experiment_id: '231980581491207550'
+lifecycle_stage: deleted
+run_id: 4538601ec17a4708a20b4fd7b780ef8c
+run_name: skillful-mouse-979
+run_uuid: 4538601ec17a4708a20b4fd7b780ef8c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378471326
+status: 3
+tags: []
+user_id: kushalmiglani

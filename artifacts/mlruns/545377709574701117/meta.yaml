@@ -1,0 +1,6 @@
+artifact_location: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/545377709574701117
+creation_time: 1688381092490
+experiment_id: '545377709574701117'
+last_update_time: 1688381092490
+lifecycle_stage: active
+name: training_module

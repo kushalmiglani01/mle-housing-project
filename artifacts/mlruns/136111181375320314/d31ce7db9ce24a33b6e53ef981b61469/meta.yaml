@@ -1,0 +1,16 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/136111181375320314/d31ce7db9ce24a33b6e53ef981b61469/artifacts
+deleted_time: 1688395270957
+end_time: 1688393210580
+entry_point_name: ''
+experiment_id: '136111181375320314'
+lifecycle_stage: deleted
+run_id: d31ce7db9ce24a33b6e53ef981b61469
+run_name: adaptable-elk-218
+run_uuid: d31ce7db9ce24a33b6e53ef981b61469
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688392984627
+status: 4
+tags: []
+user_id: kushalmiglani

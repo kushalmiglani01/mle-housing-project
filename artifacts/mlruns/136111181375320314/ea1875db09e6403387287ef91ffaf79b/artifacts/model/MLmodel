@@ -1,0 +1,26 @@
+artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.9.16
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.2.0
+mlflow_version: 2.4.1
+model_uuid: 05b60c78f02241f5ad6ac6743970faf6
+run_id: ea1875db09e6403387287ef91ffaf79b
+signature:
+  inputs: '[{"type": "double", "name": "longitude"}, {"type": "double", "name": "latitude"},
+    {"type": "double", "name": "housing_median_age"}, {"type": "double", "name": "total_rooms"},
+    {"type": "double", "name": "total_bedrooms"}, {"type": "double", "name": "population"},
+    {"type": "double", "name": "households"}, {"type": "double", "name": "median_income"},
+    {"type": "string", "name": "ocean_proximity"}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+utc_time_created: '2023-07-03 14:34:31.268478'

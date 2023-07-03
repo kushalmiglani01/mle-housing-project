@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/295271738838227429/7964a591d27940f2a2af92a865b68691/artifacts
+end_time: 1688378509777
+entry_point_name: ''
+experiment_id: '295271738838227429'
+lifecycle_stage: active
+run_id: 7964a591d27940f2a2af92a865b68691
+run_name: mercurial-cow-364
+run_uuid: 7964a591d27940f2a2af92a865b68691
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378509037
+status: 3
+tags: []
+user_id: kushalmiglani

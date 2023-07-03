@@ -1,0 +1,1 @@
+[('imputer', SimpleImputer(strategy='median')), ('attribs_adder', addAttributes(bedrooms_ix=4, households_ix=6, population_ix=5, rooms_ix=3)), ('std_scaler', StandardScaler())]

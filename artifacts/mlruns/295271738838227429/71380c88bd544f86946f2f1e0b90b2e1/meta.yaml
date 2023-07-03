@@ -1,0 +1,15 @@
+artifact_uri: file:///home/kushalmiglani/TCE/mle-training/artifacts/mlruns/295271738838227429/71380c88bd544f86946f2f1e0b90b2e1/artifacts
+end_time: 1688378513378
+entry_point_name: ''
+experiment_id: '295271738838227429'
+lifecycle_stage: active
+run_id: 71380c88bd544f86946f2f1e0b90b2e1
+run_name: abundant-mole-359
+run_uuid: 71380c88bd544f86946f2f1e0b90b2e1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1688378512931
+status: 3
+tags: []
+user_id: kushalmiglani
