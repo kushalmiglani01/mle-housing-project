@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>housingmodel.custom_transformers &mdash; housingmodel v.0.3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            housingmodel
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../housingmodel.html">housingmodel package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">housingmodel</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">housingmodel.custom_transformers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for housingmodel.custom_transformers</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">housingmodel.custom_logger</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">configure_logger</span><span class="p">()</span>
+
+
+<span class="c1"># Custom Class to add attributes</span>
+<div class="viewcode-block" id="addAttributes"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.addAttributes">[docs]</a><span class="k">class</span> <span class="nc">addAttributes</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom transformer to add new attributes to a feature matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rooms_ix : int</span>
+<span class="sd">        Index of the column containing the number of rooms in each district.</span>
+<span class="sd">    households_ix : int</span>
+<span class="sd">        Index of the column containing the number of households in each district.</span>
+<span class="sd">    population_ix : int</span>
+<span class="sd">        Index of the column containing the number of inhabitants in each district.</span>
+<span class="sd">    bedrooms_ix : int</span>
+<span class="sd">        Index of the column containing the number of bedrooms in each district.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    fit(X[, y]) -&gt; self</span>
+<span class="sd">        Fit transformer to the data.</span>
+
+<span class="sd">    transform(X) -&gt; ndarray</span>
+<span class="sd">        Transform the data by adding new attributes.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This transformer assumes that the input data is a numpy ndarray or a pandas DataFrame.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">rooms_ix</span><span class="p">,</span> <span class="n">households_ix</span><span class="p">,</span> <span class="n">population_ix</span><span class="p">,</span> <span class="n">bedrooms_ix</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rooms_ix</span> <span class="o">=</span> <span class="n">rooms_ix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">households_ix</span> <span class="o">=</span> <span class="n">households_ix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">population_ix</span> <span class="o">=</span> <span class="n">population_ix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bedrooms_ix</span> <span class="o">=</span> <span class="n">bedrooms_ix</span>
+
+<div class="viewcode-block" id="addAttributes.fit"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.addAttributes.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transformer to the input data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+
+<span class="sd">        y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            The target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="addAttributes.transform"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.addAttributes.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform the input data by adding new attributes based on the specified indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            The input data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Numpy array containing the original input data with additional</span>
+<span class="sd">            attributes added based on the specified indices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adding Atrributes Transformer Started!&quot;</span><span class="p">)</span>
+        <span class="n">rooms_per_household</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rooms_ix</span><span class="p">]</span> <span class="o">/</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">households_ix</span><span class="p">]</span>
+        <span class="n">population_per_household</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">population_ix</span><span class="p">]</span> <span class="o">/</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">households_ix</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">bedrooms_per_room</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bedrooms_ix</span><span class="p">]</span> <span class="o">/</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rooms_ix</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">rooms_per_household</span><span class="p">,</span> <span class="n">population_per_household</span><span class="p">,</span> <span class="n">bedrooms_per_room</span>
+        <span class="p">]</span></div></div>
+
+
+<span class="c1"># Custom Transformer for Feature Selection</span>
+<div class="viewcode-block" id="featureSelectorRFE"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.featureSelectorRFE">[docs]</a><span class="k">class</span> <span class="nc">featureSelectorRFE</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom Transformer for Feature Selection using Recursive Feature Elimination with Cross-Validation</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    support_: array-like of shape (n_features,)</span>
+<span class="sd">        The mask of selected features.</span>
+<span class="sd">    feature_importances_: array-like of shape (n_features,)</span>
+<span class="sd">        The feature importances.</span>
+<span class="sd">    n_features_: int</span>
+<span class="sd">        The total number of features in the input data.</span>
+<span class="sd">    k_features_limit: int, optional</span>
+<span class="sd">        The limit on the maximum number of features to select. If None, it selects all features with non-zero importance.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    --------</span>
+<span class="sd">    fit(X, y=None)</span>
+<span class="sd">        Fit the transformer on the input data.</span>
+
+<span class="sd">    transform(X, y=None)</span>
+<span class="sd">        Select the most important features based on their importances.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This transformer assumes that the input data is a numpy ndarray or a pandas DataFrame.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initiating the class feature selector with required inputs</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">support_</span><span class="p">,</span>
+        <span class="n">feature_importances_</span><span class="p">,</span>
+        <span class="n">n_features_</span><span class="p">,</span>
+        <span class="n">k_features_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">support_</span> <span class="o">=</span> <span class="n">support_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">=</span> <span class="n">feature_importances_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span> <span class="o">=</span> <span class="n">n_features_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_features_limit</span> <span class="o">=</span> <span class="n">k_features_limit</span>
+
+<div class="viewcode-block" id="featureSelectorRFE.fit"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.featureSelectorRFE.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transformer on the input data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X: array-like of shape (n_samples, n_features)</span>
+<span class="sd">            The input data to be transformed.</span>
+<span class="sd">        y: array-like of shape (n_samples,), optional</span>
+<span class="sd">            The target values (class labels in classification, real numbers in regression). This parameter is not used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        self: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="c1"># Getting the important features and its index using rfecv object</span>
+<div class="viewcode-block" id="featureSelectorRFE.transform"><a class="viewcode-back" href="../../housingmodel.html#housingmodel.custom_transformers.featureSelectorRFE.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transformer on the input data.</span>
+
+<span class="sd">        transform(X, y=None)</span>
+<span class="sd">            Select the most important features based on their importances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X: array-like of shape (n_samples, n_features)</span>
+<span class="sd">            The input data to be transformed.</span>
+<span class="sd">        y: array-like of shape (n_samples,), optional</span>
+<span class="sd">            The target values (class labels in classification, real numbers in regression). This parameter is not used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">        X_transformed: array-like of shape (n_samples, k_features)</span>
+<span class="sd">            The transformed input data with the k most important features.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Feature Selector Transformer Started!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features_used_index</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">support_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span>
+        <span class="p">]</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_importances_</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_features_limit</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_features_limit</span>
+        <span class="n">top_k_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="o">-</span><span class="n">k</span><span class="p">)[</span><span class="o">-</span><span class="n">k</span><span class="p">:]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">features_used_index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_k_indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kushal Miglani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
